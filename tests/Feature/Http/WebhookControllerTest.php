@@ -97,7 +97,7 @@ it('queues payment webhook when queue configured', function (): void {
         ->assertOk()
         ->assertJson(['status' => 'queued']);
 
-    Bus::assertDispatched(ProcessMontonioWebhook::class, fn($job): bool => $job->type === 'payment' && $job->token === 'some-token');
+    Bus::assertDispatched(ProcessMontonioWebhook::class, fn ($job): bool => $job->type === 'payment' && $job->token === 'some-token');
 });
 
 it('queues shipping webhook when queue configured', function (): void {
@@ -108,7 +108,7 @@ it('queues shipping webhook when queue configured', function (): void {
         ->assertOk()
         ->assertJson(['status' => 'queued']);
 
-    Bus::assertDispatched(ProcessMontonioWebhook::class, fn($job): bool => $job->type === 'shipping' && $job->token === 'some-shipping-token');
+    Bus::assertDispatched(ProcessMontonioWebhook::class, fn ($job): bool => $job->type === 'shipping' && $job->token === 'some-shipping-token');
 });
 
 it('dispatches to configured queue name', function (): void {
@@ -117,7 +117,7 @@ it('dispatches to configured queue name', function (): void {
 
     $this->postJson(route('montonio.webhook'), ['orderToken' => 'token']);
 
-    Bus::assertDispatched(ProcessMontonioWebhook::class, fn($job): bool => $job->queue === 'custom-queue');
+    Bus::assertDispatched(ProcessMontonioWebhook::class, fn ($job): bool => $job->queue === 'custom-queue');
 });
 
 it('prioritizes orderToken over payload', function (): void {

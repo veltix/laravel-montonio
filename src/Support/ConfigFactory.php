@@ -30,10 +30,19 @@ final class ConfigFactory
             ? $app->make(StreamFactoryInterface::class)
             : new HttpFactory();
 
+        /** @var string $accessKey */
+        $accessKey = config('montonio.access_key');
+
+        /** @var string $secretKey */
+        $secretKey = config('montonio.secret_key');
+
+        /** @var string $environment */
+        $environment = config('montonio.environment');
+
         return new Config(
-            accessKey: config('montonio.access_key'),
-            secretKey: config('montonio.secret_key'),
-            environment: Environment::from(config('montonio.environment')),
+            accessKey: $accessKey,
+            secretKey: $secretKey,
+            environment: Environment::from($environment),
             httpClient: $httpClient,
             requestFactory: $requestFactory,
             streamFactory: $streamFactory,

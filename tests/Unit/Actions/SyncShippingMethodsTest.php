@@ -19,14 +19,14 @@ beforeEach(function (): void {
 });
 
 it('creates correct records from fixture', function (): void {
-    $this->app->make(\Veltix\LaravelMontonio\Actions\SyncShippingMethods::class)->handle();
+    $this->app->make(Veltix\LaravelMontonio\Actions\SyncShippingMethods::class)->handle();
 
     // EE: dpd/courier, dpd/pickupPoint, omniva/courier, omniva/pickupPoint = 4
     expect(ShippingMethod::count())->toBe(4);
 });
 
 it('returns correct SyncResult', function (): void {
-    $result = $this->app->make(\Veltix\LaravelMontonio\Actions\SyncShippingMethods::class)->handle();
+    $result = $this->app->make(Veltix\LaravelMontonio\Actions\SyncShippingMethods::class)->handle();
 
     expect($result)->toBeInstanceOf(SyncResult::class)
         ->and($result->created)->toBe(4)
@@ -35,13 +35,13 @@ it('returns correct SyncResult', function (): void {
 });
 
 it('updates on second sync', function (): void {
-    $this->app->make(\Veltix\LaravelMontonio\Actions\SyncShippingMethods::class)->handle();
+    $this->app->make(Veltix\LaravelMontonio\Actions\SyncShippingMethods::class)->handle();
 
     $this->app->instance(Montonio::class, montonioWithResponses(
         jsonResponse(200, fixture('Shipping/shipping-methods.json')),
     ));
 
-    $result = $this->app->make(\Veltix\LaravelMontonio\Actions\SyncShippingMethods::class)->handle();
+    $result = $this->app->make(Veltix\LaravelMontonio\Actions\SyncShippingMethods::class)->handle();
 
     expect($result->created)->toBe(0)
         ->and($result->updated)->toBe(4)
@@ -58,7 +58,7 @@ it('deactivates stale records', function (): void {
         'active' => true,
     ]);
 
-    $result = $this->app->make(\Veltix\LaravelMontonio\Actions\SyncShippingMethods::class)->handle();
+    $result = $this->app->make(Veltix\LaravelMontonio\Actions\SyncShippingMethods::class)->handle();
 
     expect($result->deactivated)->toBe(1)
         ->and(ShippingMethod::where('carrier_code', 'obsolete')->first()->active)->toBeFalse();
@@ -67,13 +67,13 @@ it('deactivates stale records', function (): void {
 it('flushes shipping methods cache key', function (): void {
     Cache::put('montonio:shipping_methods', 'cached-value', 3600);
 
-    $this->app->make(\Veltix\LaravelMontonio\Actions\SyncShippingMethods::class)->handle();
+    $this->app->make(Veltix\LaravelMontonio\Actions\SyncShippingMethods::class)->handle();
 
     expect(Cache::has('montonio:shipping_methods'))->toBeFalse();
 });
 
 it('stores subtypes and constraints in metadata', function (): void {
-    $this->app->make(\Veltix\LaravelMontonio\Actions\SyncShippingMethods::class)->handle();
+    $this->app->make(Veltix\LaravelMontonio\Actions\SyncShippingMethods::class)->handle();
 
     $dpdCourier = ShippingMethod::where('carrier_code', 'dpd')->where('method_code', 'courier')->first();
     expect($dpdCourier->metadata['subtypes'])->toBe([['code' => 'standard', 'rate' => null, 'currency' => null]])
@@ -107,7 +107,7 @@ it('stores null subtypes and constraints when absent', function (): void {
         jsonResponse(200, $fixtureData),
     ));
 
-    $this->app->make(\Veltix\LaravelMontonio\Actions\SyncShippingMethods::class)->handle();
+    $this->app->make(Veltix\LaravelMontonio\Actions\SyncShippingMethods::class)->handle();
 
     $method = ShippingMethod::where('carrier_code', 'testCarrier')->first();
     expect($method->metadata['subtypes'])->toBeNull()
@@ -115,7 +115,7 @@ it('stores null subtypes and constraints when absent', function (): void {
 });
 
 it('generates name via Str::headline', function (): void {
-    $this->app->make(\Veltix\LaravelMontonio\Actions\SyncShippingMethods::class)->handle();
+    $this->app->make(Veltix\LaravelMontonio\Actions\SyncShippingMethods::class)->handle();
 
     expect(ShippingMethod::where('method_code', 'pickupPoint')->first()->name)->toBe('Pickup Point')
         ->and(ShippingMethod::where('method_code', 'courier')->first()->name)->toBe('Courier');

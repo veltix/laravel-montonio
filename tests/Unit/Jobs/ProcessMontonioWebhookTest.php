@@ -26,7 +26,7 @@ it('verifies and dispatches payment webhook event', function (): void {
 
     $this->app->call($job->handle(...));
 
-    Event::assertDispatched(PaymentWebhookReceived::class, fn($event): bool => $event->payload->merchantReference === 'MY-ORDER-ID-123'
+    Event::assertDispatched(PaymentWebhookReceived::class, fn ($event): bool => $event->payload->merchantReference === 'MY-ORDER-ID-123'
         && $event->payload->grandTotal === 99.99);
 });
 
@@ -38,7 +38,7 @@ it('verifies and dispatches shipping webhook event', function (): void {
 
     $this->app->call($job->handle(...));
 
-    Event::assertDispatched(ShipmentRegistered::class, fn($event): bool => $event->payload->eventType === ShippingWebhookEvent::ShipmentRegistered);
+    Event::assertDispatched(ShipmentRegistered::class, fn ($event): bool => $event->payload->eventType === ShippingWebhookEvent::ShipmentRegistered);
 });
 
 it('throws on invalid payment token', function (): void {

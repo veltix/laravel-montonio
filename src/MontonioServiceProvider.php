@@ -18,7 +18,7 @@ final class MontonioServiceProvider extends ServiceProvider
     {
         $this->mergeConfigFrom(__DIR__.'/../config/montonio.php', 'montonio');
 
-        $this->app->singleton(Montonio::class, fn (): \Veltix\Montonio\Montonio => new Montonio(ConfigFactory::make()));
+        $this->app->singleton(Montonio::class, fn (): Montonio => new Montonio(ConfigFactory::make()));
     }
 
     public function boot(): void
@@ -38,8 +38,14 @@ final class MontonioServiceProvider extends ServiceProvider
             ]);
         }
 
-        Route::post(config('montonio.webhooks.route'), WebhookController::class)
-            ->middleware(config('montonio.webhooks.middleware'))
-            ->name('montonio.webhook');
+        /** @var string $route */
+        $route = config('montonio.webhooks.route');
+
+        /** @var array<string>|string|null $middleware */
+        $middleware = config('montonio.webhooks.middleware');
+
+        $webhookRoute = Route::post($route, WebhookController::class);
+        $webhookRoute->middleware($middleware);
+        $webhookRoute->name('montonio.webhook');
     }
 }

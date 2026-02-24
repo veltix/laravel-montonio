@@ -13,6 +13,10 @@ final class PaymentMethod extends Model
 
     protected $guarded = [];
 
+    /**
+     * @param  Builder<self>  $query
+     * @return Builder<self>
+     */
     public function scopeActive(Builder $query): Builder
     {
         return $query->where('active', true);

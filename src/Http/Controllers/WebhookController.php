@@ -16,14 +16,17 @@ final class WebhookController
 {
     public function __invoke(Request $request, Montonio $montonio, WebhookDispatcher $dispatcher): JsonResponse
     {
+        /** @var string|null $orderToken */
         $orderToken = $request->input('orderToken');
+
+        /** @var string|null $payload */
         $payload = $request->input('payload');
 
-        if ($orderToken) {
+        if ($orderToken !== null) {
             return $this->handlePayment($orderToken, $montonio, $dispatcher);
         }
 
-        if ($payload) {
+        if ($payload !== null) {
             return $this->handleShipping($payload, $montonio, $dispatcher);
         }
 
@@ -32,6 +35,7 @@ final class WebhookController
 
     private function handlePayment(string $token, Montonio $montonio, WebhookDispatcher $dispatcher): JsonResponse
     {
+        /** @var string|null $queue */
         $queue = config('montonio.webhooks.queue');
 
         if ($queue !== null) {
@@ -53,6 +57,7 @@ final class WebhookController
 
     private function handleShipping(string $token, Montonio $montonio, WebhookDispatcher $dispatcher): JsonResponse
     {
+        /** @var string|null $queue */
         $queue = config('montonio.webhooks.queue');
 
         if ($queue !== null) {

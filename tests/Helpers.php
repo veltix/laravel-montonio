@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Veltix\LaravelMontonio\Tests;
 
+use Closure;
 use Firebase\JWT\JWT;
 use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Client\ClientInterface;
@@ -13,6 +14,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UriInterface;
+use RuntimeException;
 use Veltix\Montonio\Config;
 use Veltix\Montonio\Environment;
 use Veltix\Montonio\Montonio;
@@ -28,7 +30,10 @@ function streamFromString(string $content): StreamInterface
     {
         public function __construct(private $resource, private readonly string $content) {}
 
-        public function __toString(): string { return $this->content; }
+        public function __toString(): string
+        {
+            return $this->content;
+        }
 
         public function close(): void
         {
@@ -37,31 +42,73 @@ function streamFromString(string $content): StreamInterface
             }
         }
 
-        public function detach() { $r = $this->resource; $this->resource = null; return $r; }
+        public function detach()
+        {
+            $r = $this->resource;
+            $this->resource = null;
 
-        public function getSize(): int { return strlen($this->content); }
+            return $r;
+        }
 
-        public function tell(): int { return ftell($this->resource); }
+        public function getSize(): int
+        {
+            return mb_strlen($this->content);
+        }
 
-        public function eof(): bool { return feof($this->resource); }
+        public function tell(): int
+        {
+            return ftell($this->resource);
+        }
 
-        public function isSeekable(): bool { return true; }
+        public function eof(): bool
+        {
+            return feof($this->resource);
+        }
 
-        public function seek(int $offset, int $whence = SEEK_SET): void { fseek($this->resource, $offset, $whence); }
+        public function isSeekable(): bool
+        {
+            return true;
+        }
 
-        public function rewind(): void { rewind($this->resource); }
+        public function seek(int $offset, int $whence = SEEK_SET): void
+        {
+            fseek($this->resource, $offset, $whence);
+        }
 
-        public function isWritable(): bool { return true; }
+        public function rewind(): void
+        {
+            rewind($this->resource);
+        }
 
-        public function write(string $string): int { return fwrite($this->resource, $string); }
+        public function isWritable(): bool
+        {
+            return true;
+        }
 
-        public function isReadable(): bool { return true; }
+        public function write(string $string): int
+        {
+            return fwrite($this->resource, $string);
+        }
 
-        public function read(int $length): string { return fread($this->resource, $length); }
+        public function isReadable(): bool
+        {
+            return true;
+        }
 
-        public function getContents(): string { return stream_get_contents($this->resource); }
+        public function read(int $length): string
+        {
+            return fread($this->resource, $length);
+        }
 
-        public function getMetadata(?string $key = null) { return $key ? null : []; }
+        public function getContents(): string
+        {
+            return stream_get_contents($this->resource);
+        }
+
+        public function getMetadata(?string $key = null)
+        {
+            return $key ? null : [];
+        }
     };
 }
 
@@ -77,13 +124,28 @@ function psrRequest(string $method = 'GET', string $url = ''): RequestInterface
 
         public function __construct(private string $method, private string $url) {}
 
-        public function getRequestTarget(): string { return parse_url($this->url, PHP_URL_PATH) ?? '/'; }
+        public function getRequestTarget(): string
+        {
+            return parse_url($this->url, PHP_URL_PATH) ?? '/';
+        }
 
-        public function withRequestTarget(string $requestTarget): RequestInterface { return $this; }
+        public function withRequestTarget(string $requestTarget): RequestInterface
+        {
+            return $this;
+        }
 
-        public function getMethod(): string { return $this->method; }
+        public function getMethod(): string
+        {
+            return $this->method;
+        }
 
-        public function withMethod(string $method): RequestInterface { $c = clone $this; $c->method = $method; return $c; }
+        public function withMethod(string $method): RequestInterface
+        {
+            $c = clone $this;
+            $c->method = $method;
+
+            return $c;
+        }
 
         public function getUri(): UriInterface
         {
@@ -91,63 +153,162 @@ function psrRequest(string $method = 'GET', string $url = ''): RequestInterface
             {
                 public function __construct(private string $url) {}
 
-                public function getScheme(): string { return parse_url($this->url, PHP_URL_SCHEME) ?? ''; }
+                public function getScheme(): string
+                {
+                    return parse_url($this->url, PHP_URL_SCHEME) ?? '';
+                }
 
-                public function getAuthority(): string { return parse_url($this->url, PHP_URL_HOST) ?? ''; }
+                public function getAuthority(): string
+                {
+                    return parse_url($this->url, PHP_URL_HOST) ?? '';
+                }
 
-                public function getUserInfo(): string { return ''; }
+                public function getUserInfo(): string
+                {
+                    return '';
+                }
 
-                public function getHost(): string { return parse_url($this->url, PHP_URL_HOST) ?? ''; }
+                public function getHost(): string
+                {
+                    return parse_url($this->url, PHP_URL_HOST) ?? '';
+                }
 
-                public function getPort(): ?int { return parse_url($this->url, PHP_URL_PORT) ?: null; }
+                public function getPort(): ?int
+                {
+                    return parse_url($this->url, PHP_URL_PORT) ?: null;
+                }
 
-                public function getPath(): string { return parse_url($this->url, PHP_URL_PATH) ?? ''; }
+                public function getPath(): string
+                {
+                    return parse_url($this->url, PHP_URL_PATH) ?? '';
+                }
 
-                public function getQuery(): string { return parse_url($this->url, PHP_URL_QUERY) ?? ''; }
+                public function getQuery(): string
+                {
+                    return parse_url($this->url, PHP_URL_QUERY) ?? '';
+                }
 
-                public function getFragment(): string { return parse_url($this->url, PHP_URL_FRAGMENT) ?? ''; }
+                public function getFragment(): string
+                {
+                    return parse_url($this->url, PHP_URL_FRAGMENT) ?? '';
+                }
 
-                public function withScheme(string $scheme): UriInterface { return $this; }
+                public function withScheme(string $scheme): UriInterface
+                {
+                    return $this;
+                }
 
-                public function withUserInfo(string $user, ?string $password = null): UriInterface { return $this; }
+                public function withUserInfo(string $user, ?string $password = null): UriInterface
+                {
+                    return $this;
+                }
 
-                public function withHost(string $host): UriInterface { return $this; }
+                public function withHost(string $host): UriInterface
+                {
+                    return $this;
+                }
 
-                public function withPort(?int $port): UriInterface { return $this; }
+                public function withPort(?int $port): UriInterface
+                {
+                    return $this;
+                }
 
-                public function withPath(string $path): UriInterface { return $this; }
+                public function withPath(string $path): UriInterface
+                {
+                    return $this;
+                }
 
-                public function withQuery(string $query): UriInterface { return $this; }
+                public function withQuery(string $query): UriInterface
+                {
+                    return $this;
+                }
 
-                public function withFragment(string $fragment): UriInterface { return $this; }
+                public function withFragment(string $fragment): UriInterface
+                {
+                    return $this;
+                }
 
-                public function __toString(): string { return $this->url; }
+                public function __toString(): string
+                {
+                    return $this->url;
+                }
             };
         }
 
-        public function withUri(UriInterface $uri, bool $preserveHost = false): RequestInterface { $c = clone $this; $c->url = (string) $uri; return $c; }
+        public function withUri(UriInterface $uri, bool $preserveHost = false): RequestInterface
+        {
+            $c = clone $this;
+            $c->url = (string) $uri;
 
-        public function getProtocolVersion(): string { return $this->protocolVersion; }
+            return $c;
+        }
 
-        public function withProtocolVersion(string $version): RequestInterface { $c = clone $this; $c->protocolVersion = $version; return $c; }
+        public function getProtocolVersion(): string
+        {
+            return $this->protocolVersion;
+        }
 
-        public function getHeaders(): array { return $this->headers; }
+        public function withProtocolVersion(string $version): RequestInterface
+        {
+            $c = clone $this;
+            $c->protocolVersion = $version;
 
-        public function hasHeader(string $name): bool { return isset($this->headers[strtolower($name)]); }
+            return $c;
+        }
 
-        public function getHeader(string $name): array { return $this->headers[strtolower($name)] ?? []; }
+        public function getHeaders(): array
+        {
+            return $this->headers;
+        }
 
-        public function getHeaderLine(string $name): string { return implode(', ', $this->getHeader($name)); }
+        public function hasHeader(string $name): bool
+        {
+            return isset($this->headers[mb_strtolower($name)]);
+        }
 
-        public function withHeader(string $name, $value): RequestInterface { $c = clone $this; $c->headers[strtolower($name)] = is_array($value) ? $value : [$value]; return $c; }
+        public function getHeader(string $name): array
+        {
+            return $this->headers[mb_strtolower($name)] ?? [];
+        }
 
-        public function withAddedHeader(string $name, $value): RequestInterface { return $this->withHeader($name, $value); }
+        public function getHeaderLine(string $name): string
+        {
+            return implode(', ', $this->getHeader($name));
+        }
 
-        public function withoutHeader(string $name): RequestInterface { $c = clone $this; unset($c->headers[strtolower($name)]); return $c; }
+        public function withHeader(string $name, $value): RequestInterface
+        {
+            $c = clone $this;
+            $c->headers[mb_strtolower($name)] = is_array($value) ? $value : [$value];
 
-        public function getBody(): StreamInterface { return $this->body ?? streamFromString(''); }
+            return $c;
+        }
 
-        public function withBody(StreamInterface $body): RequestInterface { $c = clone $this; $c->body = $body; return $c; }
+        public function withAddedHeader(string $name, $value): RequestInterface
+        {
+            return $this->withHeader($name, $value);
+        }
+
+        public function withoutHeader(string $name): RequestInterface
+        {
+            $c = clone $this;
+            unset($c->headers[mb_strtolower($name)]);
+
+            return $c;
+        }
+
+        public function getBody(): StreamInterface
+        {
+            return $this->body ?? streamFromString('');
+        }
+
+        public function withBody(StreamInterface $body): RequestInterface
+        {
+            $c = clone $this;
+            $c->body = $body;
+
+            return $c;
+        }
     };
 }
 
@@ -163,38 +324,92 @@ function jsonResponse(int $status, array $body): ResponseInterface
 
         public function __construct(private int $status, private string $json) {}
 
-        public function getStatusCode(): int { return $this->status; }
+        public function getStatusCode(): int
+        {
+            return $this->status;
+        }
 
-        public function withStatus(int $code, string $reasonPhrase = ''): ResponseInterface { $c = clone $this; $c->status = $code; return $c; }
+        public function withStatus(int $code, string $reasonPhrase = ''): ResponseInterface
+        {
+            $c = clone $this;
+            $c->status = $code;
 
-        public function getReasonPhrase(): string { return ''; }
+            return $c;
+        }
 
-        public function getProtocolVersion(): string { return $this->protocolVersion; }
+        public function getReasonPhrase(): string
+        {
+            return '';
+        }
 
-        public function withProtocolVersion(string $version): ResponseInterface { $c = clone $this; $c->protocolVersion = $version; return $c; }
+        public function getProtocolVersion(): string
+        {
+            return $this->protocolVersion;
+        }
 
-        public function getHeaders(): array { return $this->headers; }
+        public function withProtocolVersion(string $version): ResponseInterface
+        {
+            $c = clone $this;
+            $c->protocolVersion = $version;
 
-        public function hasHeader(string $name): bool { return isset($this->headers[strtolower($name)]); }
+            return $c;
+        }
 
-        public function getHeader(string $name): array { return $this->headers[strtolower($name)] ?? []; }
+        public function getHeaders(): array
+        {
+            return $this->headers;
+        }
 
-        public function getHeaderLine(string $name): string { return implode(', ', $this->getHeader($name)); }
+        public function hasHeader(string $name): bool
+        {
+            return isset($this->headers[mb_strtolower($name)]);
+        }
 
-        public function withHeader(string $name, $value): ResponseInterface { $c = clone $this; $c->headers[strtolower($name)] = is_array($value) ? $value : [$value]; return $c; }
+        public function getHeader(string $name): array
+        {
+            return $this->headers[mb_strtolower($name)] ?? [];
+        }
 
-        public function withAddedHeader(string $name, $value): ResponseInterface { return $this->withHeader($name, $value); }
+        public function getHeaderLine(string $name): string
+        {
+            return implode(', ', $this->getHeader($name));
+        }
 
-        public function withoutHeader(string $name): ResponseInterface { $c = clone $this; unset($c->headers[strtolower($name)]); return $c; }
+        public function withHeader(string $name, $value): ResponseInterface
+        {
+            $c = clone $this;
+            $c->headers[mb_strtolower($name)] = is_array($value) ? $value : [$value];
 
-        public function getBody(): StreamInterface { return streamFromString($this->json); }
+            return $c;
+        }
 
-        public function withBody(StreamInterface $body): ResponseInterface { return $this; }
+        public function withAddedHeader(string $name, $value): ResponseInterface
+        {
+            return $this->withHeader($name, $value);
+        }
+
+        public function withoutHeader(string $name): ResponseInterface
+        {
+            $c = clone $this;
+            unset($c->headers[mb_strtolower($name)]);
+
+            return $c;
+        }
+
+        public function getBody(): StreamInterface
+        {
+            return streamFromString($this->json);
+        }
+
+        public function withBody(StreamInterface $body): ResponseInterface
+        {
+            return $this;
+        }
     };
 }
 
 /**
- * @return object{client: ClientInterface, lastRequest: \Closure(): ?RequestInterface}
+ * @return object{client: ClientInterface, lastRequest: Closure(): ?RequestInterface}
  */
 function fakeClient(ResponseInterface ...$responses): object
 {
@@ -209,7 +424,7 @@ function fakeClient(ResponseInterface ...$responses): object
         {
             $this->lastRequest = $request;
             if ($this->queue === []) {
-                throw new class('No more responses in queue') extends \RuntimeException implements ClientExceptionInterface {};
+                throw new class('No more responses in queue') extends RuntimeException implements ClientExceptionInterface {};
             }
 
             return array_shift($this->queue);
@@ -266,7 +481,7 @@ function mockStreamFactory(): StreamFactoryInterface
 
 function testConfig(?ClientInterface $httpClient = null): Config
 {
-    $mock = $httpClient instanceof \Psr\Http\Client\ClientInterface ? null : fakeClient(jsonResponse(200, []));
+    $mock = $httpClient instanceof ClientInterface ? null : fakeClient(jsonResponse(200, []));
 
     return new Config(
         accessKey: 'test_access_key',

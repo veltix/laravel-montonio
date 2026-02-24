@@ -11,28 +11,36 @@ use Veltix\LaravelMontonio\Models\ShippingMethod;
 
 final class MethodCacheService
 {
+    /** @return Collection<int, PaymentMethod> */
     public function paymentMethods(): Collection
     {
         if (! config('montonio.cache.enabled')) {
             return PaymentMethod::active()->get();
         }
 
+        /** @var int $ttl */
+        $ttl = config('montonio.cache.ttl');
+
         return Cache::remember(
             'montonio:payment_methods',
-            config('montonio.cache.ttl'),
+            $ttl,
             fn () => PaymentMethod::active()->get(),
         );
     }
 
+    /** @return Collection<int, ShippingMethod> */
     public function shippingMethods(): Collection
     {
         if (! config('montonio.cache.enabled')) {
             return ShippingMethod::active()->get();
         }
 
+        /** @var int $ttl */
+        $ttl = config('montonio.cache.ttl');
+
         return Cache::remember(
             'montonio:shipping_methods',
-            config('montonio.cache.ttl'),
+            $ttl,
             fn () => ShippingMethod::active()->get(),
         );
     }

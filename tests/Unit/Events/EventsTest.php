@@ -10,9 +10,9 @@ use Veltix\LaravelMontonio\Events\ShipmentRegistered;
 use Veltix\LaravelMontonio\Events\ShipmentRegistrationFailed;
 use Veltix\LaravelMontonio\Events\ShipmentStatusUpdated;
 use Veltix\Montonio\Payments\Enum\PaymentStatus;
+use Veltix\Montonio\Shipping\Enum\ShippingWebhookEvent;
 use Veltix\Montonio\Webhook\Dto\PaymentWebhookPayload;
 use Veltix\Montonio\Webhook\Dto\ShippingWebhookPayload;
-use Veltix\Montonio\Shipping\Enum\ShippingWebhookEvent;
 
 it('PaymentWebhookReceived holds payment payload', function (): void {
     $payload = new PaymentWebhookPayload(

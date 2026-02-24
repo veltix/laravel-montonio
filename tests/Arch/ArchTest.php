@@ -15,7 +15,7 @@ arch('all source files use strict types')
 // ────────────────────────────────────────────────────
 
 arch('SyncResult is final and readonly')
-    ->expect(\Veltix\LaravelMontonio\Support\SyncResult::class)
+    ->expect(Veltix\LaravelMontonio\Support\SyncResult::class)
     ->toBeFinal()
     ->toBeReadonly();
 
@@ -24,16 +24,16 @@ arch('SyncResult is final and readonly')
 // ────────────────────────────────────────────────────
 
 arch('service provider extends base ServiceProvider')
-    ->expect(\Veltix\LaravelMontonio\MontonioServiceProvider::class)
-    ->toExtend(\Illuminate\Support\ServiceProvider::class);
+    ->expect(Veltix\LaravelMontonio\MontonioServiceProvider::class)
+    ->toExtend(Illuminate\Support\ServiceProvider::class);
 
 // ────────────────────────────────────────────────────
 // Section 4 — Facade
 // ────────────────────────────────────────────────────
 
 arch('facade extends base Facade')
-    ->expect(\Veltix\LaravelMontonio\Facades\Montonio::class)
-    ->toExtend(\Illuminate\Support\Facades\Facade::class);
+    ->expect(Veltix\LaravelMontonio\Facades\Montonio::class)
+    ->toExtend(Illuminate\Support\Facades\Facade::class);
 
 // ────────────────────────────────────────────────────
 // Section 5 — Models
@@ -41,7 +41,7 @@ arch('facade extends base Facade')
 
 arch('models extend Eloquent Model')
     ->expect('Veltix\LaravelMontonio\Models')
-    ->toExtend(\Illuminate\Database\Eloquent\Model::class);
+    ->toExtend(Illuminate\Database\Eloquent\Model::class);
 
 // ────────────────────────────────────────────────────
 // Section 6 — Events
@@ -49,11 +49,11 @@ arch('models extend Eloquent Model')
 
 arch('events use Dispatchable trait')
     ->expect('Veltix\LaravelMontonio\Events')
-    ->toUseTrait(\Illuminate\Foundation\Events\Dispatchable::class);
+    ->toUseTrait(Illuminate\Foundation\Events\Dispatchable::class);
 
 arch('events use SerializesModels trait')
     ->expect('Veltix\LaravelMontonio\Events')
-    ->toUseTrait(\Illuminate\Queue\SerializesModels::class);
+    ->toUseTrait(Illuminate\Queue\SerializesModels::class);
 
 // ────────────────────────────────────────────────────
 // Section 7 — Jobs
@@ -61,7 +61,7 @@ arch('events use SerializesModels trait')
 
 arch('jobs implement ShouldQueue')
     ->expect('Veltix\LaravelMontonio\Jobs')
-    ->toImplement(\Illuminate\Contracts\Queue\ShouldQueue::class);
+    ->toImplement(Illuminate\Contracts\Queue\ShouldQueue::class);
 
 // ────────────────────────────────────────────────────
 // Section 8 — Console Commands
@@ -69,7 +69,7 @@ arch('jobs implement ShouldQueue')
 
 arch('commands extend base Command')
     ->expect('Veltix\LaravelMontonio\Console')
-    ->toExtend(\Illuminate\Console\Command::class);
+    ->toExtend(Illuminate\Console\Command::class);
 
 arch('commands have Command suffix')
     ->expect('Veltix\LaravelMontonio\Console')

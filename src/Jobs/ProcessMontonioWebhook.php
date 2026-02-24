@@ -8,6 +8,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
+use InvalidArgumentException;
 use Veltix\LaravelMontonio\Support\WebhookDispatcher;
 use Veltix\Montonio\Montonio;
 
@@ -33,6 +34,7 @@ final class ProcessMontonioWebhook implements ShouldQueue
             'shipping' => $dispatcher->dispatchShipping(
                 $webhooks->verifyShippingWebhook($this->token),
             ),
+            default => throw new InvalidArgumentException('Unknown webhook type: '.$this->type),
         };
     }
 }

@@ -19,7 +19,7 @@ beforeEach(function (): void {
 });
 
 it('creates correct number of records from fixture', function (): void {
-    $this->app->make(\Veltix\LaravelMontonio\Actions\SyncPaymentMethods::class)->handle();
+    $this->app->make(Veltix\LaravelMontonio\Actions\SyncPaymentMethods::class)->handle();
 
     // blik (no setup) = 1 row
     // cardPayments (no setup) = 1 row
@@ -30,7 +30,7 @@ it('creates correct number of records from fixture', function (): void {
 });
 
 it('returns SyncResult with correct created count on fresh sync', function (): void {
-    $result = $this->app->make(\Veltix\LaravelMontonio\Actions\SyncPaymentMethods::class)->handle();
+    $result = $this->app->make(Veltix\LaravelMontonio\Actions\SyncPaymentMethods::class)->handle();
 
     expect($result)->toBeInstanceOf(SyncResult::class)
         ->and($result->created)->toBe(10)
@@ -39,14 +39,14 @@ it('returns SyncResult with correct created count on fresh sync', function (): v
 });
 
 it('updates on second sync', function (): void {
-    $this->app->make(\Veltix\LaravelMontonio\Actions\SyncPaymentMethods::class)->handle();
+    $this->app->make(Veltix\LaravelMontonio\Actions\SyncPaymentMethods::class)->handle();
 
     // Re-bind with fresh response for second sync
     $this->app->instance(Montonio::class, montonioWithResponses(
         jsonResponse(200, fixture('Payments/payment-methods.json')),
     ));
 
-    $result = $this->app->make(\Veltix\LaravelMontonio\Actions\SyncPaymentMethods::class)->handle();
+    $result = $this->app->make(Veltix\LaravelMontonio\Actions\SyncPaymentMethods::class)->handle();
 
     expect($result->created)->toBe(0)
         ->and($result->updated)->toBe(10)
@@ -62,7 +62,7 @@ it('deactivates stale records not in response', function (): void {
         'active' => true,
     ]);
 
-    $result = $this->app->make(\Veltix\LaravelMontonio\Actions\SyncPaymentMethods::class)->handle();
+    $result = $this->app->make(Veltix\LaravelMontonio\Actions\SyncPaymentMethods::class)->handle();
 
     expect($result->deactivated)->toBe(1)
         ->and(PaymentMethod::where('method_code', 'obsoleteMethod')->first()->active)->toBeFalse();
@@ -71,13 +71,13 @@ it('deactivates stale records not in response', function (): void {
 it('flushes payment methods cache key', function (): void {
     Cache::put('montonio:payment_methods', 'cached-value', 3600);
 
-    $this->app->make(\Veltix\LaravelMontonio\Actions\SyncPaymentMethods::class)->handle();
+    $this->app->make(Veltix\LaravelMontonio\Actions\SyncPaymentMethods::class)->handle();
 
     expect(Cache::has('montonio:payment_methods'))->toBeFalse();
 });
 
 it('stores null country for methods without setup', function (): void {
-    $this->app->make(\Veltix\LaravelMontonio\Actions\SyncPaymentMethods::class)->handle();
+    $this->app->make(Veltix\LaravelMontonio\Actions\SyncPaymentMethods::class)->handle();
 
     $blik = PaymentMethod::where('method_code', 'blik')->first();
 
@@ -85,7 +85,7 @@ it('stores null country for methods without setup', function (): void {
 });
 
 it('stores metadata with processor and logo_url', function (): void {
-    $this->app->make(\Veltix\LaravelMontonio\Actions\SyncPaymentMethods::class)->handle();
+    $this->app->make(Veltix\LaravelMontonio\Actions\SyncPaymentMethods::class)->handle();
 
     $blik = PaymentMethod::where('method_code', 'blik')->first();
     expect($blik->metadata['processor'])->toBe('stripe')
@@ -99,7 +99,7 @@ it('stores metadata with processor and logo_url', function (): void {
 });
 
 it('generates name via Str::headline', function (): void {
-    $this->app->make(\Veltix\LaravelMontonio\Actions\SyncPaymentMethods::class)->handle();
+    $this->app->make(Veltix\LaravelMontonio\Actions\SyncPaymentMethods::class)->handle();
 
     expect(PaymentMethod::where('method_code', 'paymentInitiation')->first()->name)->toBe('Payment Initiation')
         ->and(PaymentMethod::where('method_code', 'cardPayments')->first()->name)->toBe('Card Payments')
@@ -107,7 +107,7 @@ it('generates name via Str::headline', function (): void {
 });
 
 it('sets currency from first supported currency', function (): void {
-    $this->app->make(\Veltix\LaravelMontonio\Actions\SyncPaymentMethods::class)->handle();
+    $this->app->make(Veltix\LaravelMontonio\Actions\SyncPaymentMethods::class)->handle();
 
     $pl = PaymentMethod::where('method_code', 'paymentInitiation')->where('country', 'PL')->first();
     expect($pl->currency)->toBe('EUR'); // first in ['EUR', 'PLN']
@@ -131,7 +131,7 @@ it('rolls back on exception', function (): void {
     ));
 
     try {
-        $this->app->make(\Veltix\LaravelMontonio\Actions\SyncPaymentMethods::class)->handle();
+        $this->app->make(Veltix\LaravelMontonio\Actions\SyncPaymentMethods::class)->handle();
     } catch (Throwable) {
     }
 

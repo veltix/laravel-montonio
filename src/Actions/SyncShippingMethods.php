@@ -67,16 +67,20 @@ final readonly class SyncShippingMethods
 
     /**
      * @param  list<int|string>  $seenIds
+     *
+     * @param-out  non-empty-list<int|string>  $seenIds
      */
     private function trackUpsert(Model $model, array &$seenIds, int &$created, int &$updated): void
     {
-        $seenIds[] = $model->id;
+        /** @var int|string $id */
+        $id = $model->getKey();
+        $seenIds[] = $id;
         $model->wasRecentlyCreated ? $created++ : $updated++;
     }
 
     /**
      * @param  ShippingMethodSubtype[]|null  $subtypes
-     * @return array<int, array{code: string, rate: float|null, currency: string|null}>|null
+     * @return list<array{code: string, rate: float|null, currency: string|null}>|null
      */
     private function mapSubtypes(?array $subtypes): ?array
     {
@@ -84,11 +88,11 @@ final readonly class SyncShippingMethods
             return null;
         }
 
-        return array_map(fn (ShippingMethodSubtype $subtype): array => [
+        return array_values(array_map(fn (ShippingMethodSubtype $subtype): array => [
             'code' => $subtype->code,
             'rate' => $subtype->rate,
             'currency' => $subtype->currency,
-        ], $subtypes);
+        ], $subtypes));
     }
 
     /**
@@ -96,7 +100,7 @@ final readonly class SyncShippingMethods
      */
     private function mapConstraints(?ShippingMethodConstraints $constraints): ?array
     {
-        if (!$constraints instanceof \Veltix\Montonio\Shipping\Dto\Response\ShippingMethodConstraints) {
+        if (! $constraints instanceof ShippingMethodConstraints) {
             return null;
         }
 

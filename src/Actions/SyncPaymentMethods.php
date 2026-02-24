@@ -96,10 +96,14 @@ final readonly class SyncPaymentMethods
 
     /**
      * @param  list<int|string>  $seenIds
+     *
+     * @param-out  non-empty-list<int|string>  $seenIds
      */
     private function trackUpsert(Model $model, array &$seenIds, int &$created, int &$updated): void
     {
-        $seenIds[] = $model->id;
+        /** @var int|string $id */
+        $id = $model->getKey();
+        $seenIds[] = $id;
         $model->wasRecentlyCreated ? $created++ : $updated++;
     }
 }
