@@ -1,0 +1,65 @@
+{
+    "eventId": "e1be81fb-2355-44b2-9f28-2b1a691151bb",
+    "shipmentId": "87f55147-7765-4eb6-9bb1-3c1a4b05a435",
+    "created": "2024-06-13T10:51:57.322Z",
+    "data": {
+        "id": "87f55147-7765-4eb6-9bb1-3c1a4b05a435",
+        "createdAt": "2024-06-13T10:51:55.288Z",
+        "status": "registered",
+        "montonioOrderUuid": null,
+        "merchantReference": "order 1",
+        "carrierShipmentId": null,
+        "shippingMethod": {
+            "type": "pickupPoint",
+            "id": "377c3b06-0967-4ff2-b28a-372cab234898",
+            "carrierCode": "omniva",
+            "countryCode": "EE"
+        },
+        "sender": {
+            "id": "280d65e9-e9bc-4e41-ac18-1504f1572400",
+            "name": "Sender Y",
+            "companyName": "Company Y",
+            "streetAddress": "Kai 1",
+            "locality": "Tallinn",
+            "region": "Harjumaa",
+            "postalCode": "10111",
+            "country": "EE",
+            "phoneCountryCode": "372",
+            "phoneNumber": "53334770",
+            "email": "support@montonio.com"
+        },
+        "receiver": {
+            "id": "a8c43180-56a8-42c4-bec9-7c50af7e0684",
+            "firstName": null,
+            "lastName": null,
+            "name": "Receiver X",
+            "companyName": "Company X",
+            "streetAddress": "Kai 11",
+            "locality": "Tallinn",
+            "region": "Harjumaa",
+            "postalCode": "10111",
+            "country": "EE",
+            "phoneCountryCode": "372",
+            "phoneNumber": "53334770",
+            "email": "support@montonio.com"
+        },
+        "parcels": [
+            {
+                "id": "0b10c1e1-beaa-4b09-9bb6-c6dd4002114d",
+                "weight": 1,
+                "length": null,
+                "height": null,
+                "width": null,
+                "carrierParcelId": "CC548936341EE",
+                "trackingLink": "https://minu.omniva.ee/track/CC548936341EE?language=et"
+            }
+        ],
+        "store": {
+            "id": "088ae409-ae24-4a3c-a640-5c269f732caa"
+        },
+        "products": null
+    },
+    "eventType": "shipment.registered",
+    "iat": 1718275917,
+    "exp": 1718880717
+}

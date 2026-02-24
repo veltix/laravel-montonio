@@ -1,0 +1,109 @@
+{
+    "uuid": "0bafe86b-c5cf-4c88-ba28-484a8585f0f4",
+    "name": "Montonio Store",
+    "paymentMethods": {
+        "blik": {
+            "processor": "stripe",
+            "logoUrl": "https://public.montonio.com/images/logos/blik.png"
+        },
+        "cardPayments": {
+            "processor": "stripe",
+            "logoUrl": "https://public.montonio.com/images/logos/visa-mc-ap-gp.png"
+        },
+        "bnpl": {
+            "processor": "inbank",
+            "logoUrl": "https://public.montonio.com/images/logos/inbank_bnpl.png"
+        },
+        "hirePurchase": {
+            "processor": "inbank",
+            "logoUrl": "https://public.montonio.com/images/logos/inbank_hire_purchase.png"
+        },
+        "paymentInitiation": {
+            "processor": "montonio",
+            "setup": {
+                "PL": {
+                    "supportedCurrencies": ["EUR", "PLN"],
+                    "paymentMethods": [
+                        {"name": "Revolut Poland", "logoUrl": "https://public.montonio.com/images/aspsps_logos/v2/revolut.png", "supportedCurrencies": ["EUR", "PLN"], "uiPosition": 1, "code": "RVUALT2V"},
+                        {"name": "PKO Bank Polski", "logoUrl": "https://public.montonio.com/images/aspsps_logos/pko-polski.png", "supportedCurrencies": ["PLN"], "uiPosition": 2, "code": "BPKOPLPW"},
+                        {"name": "Pekao", "logoUrl": "https://public.montonio.com/images/aspsps_logos/pekao.png", "supportedCurrencies": ["PLN"], "uiPosition": 3, "code": "PKOPPLPW"},
+                        {"name": "mBank", "logoUrl": "https://public.montonio.com/images/aspsps_logos/mbank.png", "supportedCurrencies": ["PLN"], "uiPosition": 4, "code": "BREXPLPW"},
+                        {"name": "Santander Bank Polska", "logoUrl": "https://public.montonio.com/images/aspsps_logos/santander.png", "supportedCurrencies": ["PLN"], "uiPosition": 5, "code": "WBKPPLPP"},
+                        {"name": "Ing Poland", "logoUrl": "https://public.montonio.com/images/aspsps_logos/ing.png", "supportedCurrencies": ["PLN"], "uiPosition": 6, "code": "INGBPLPW"},
+                        {"name": "Alior", "logoUrl": "https://public.montonio.com/images/aspsps_logos/alior.png", "supportedCurrencies": ["PLN"], "uiPosition": 7, "code": "ALBPPLPW"},
+                        {"name": "BNP Paribas", "logoUrl": "https://public.montonio.com/images/aspsps_logos/bnp-paribas.png", "supportedCurrencies": ["PLN"], "uiPosition": 8, "code": "PPABPLPK"},
+                        {"name": "Millenium", "logoUrl": "https://public.montonio.com/images/aspsps_logos/millennium.png", "supportedCurrencies": ["PLN"], "uiPosition": 9, "code": "BIGBPLPW"},
+                        {"name": "Inteligo", "logoUrl": "https://public.montonio.com/images/aspsps_logos/inteligo.png", "supportedCurrencies": ["PLN"], "uiPosition": 10, "code": "IBNKPAPA"},
+                        {"name": "Credit Agricole", "logoUrl": "https://public.montonio.com/images/aspsps_logos/credit-agricole.png", "supportedCurrencies": ["PLN"], "uiPosition": 11, "code": "AGRIPLPR"},
+                        {"name": "N26 Poland", "logoUrl": "https://public.montonio.com/images/aspsps_logos/v2/n26.svg", "supportedCurrencies": ["EUR"], "uiPosition": 12, "code": "NTSBDEB1"}
+                    ]
+                },
+                "FI": {
+                    "supportedCurrencies": ["EUR"],
+                    "paymentMethods": [
+                        {"name": "OP Financial Group", "logoUrl": "https://public.montonio.com/images/aspsps_logos/op.png", "supportedCurrencies": ["EUR"], "uiPosition": 1, "code": "OKOYFIHH"},
+                        {"name": "Nordea", "logoUrl": "https://public.montonio.com/images/aspsps_logos/nordea.png", "supportedCurrencies": ["EUR"], "uiPosition": 2, "code": "NDEAFIHH"},
+                        {"name": "Danske Bank", "logoUrl": "https://public.montonio.com/images/aspsps_logos/danske.png", "supportedCurrencies": ["EUR"], "uiPosition": 3, "code": "DABAFIHH"},
+                        {"name": "Säästöpankki", "logoUrl": "https://public.montonio.com/images/aspsps_logos/saastopankki.png", "supportedCurrencies": ["EUR"], "uiPosition": 4, "code": "ITELFIHH"},
+                        {"name": "POP Pankki", "logoUrl": "https://public.montonio.com/images/aspsps_logos/pop.png", "supportedCurrencies": ["EUR"], "uiPosition": 5, "code": "POPFFI22"},
+                        {"name": "Oma Säästöpankki", "logoUrl": "https://public.montonio.com/images/aspsps_logos/omasp.png", "supportedCurrencies": ["EUR"], "uiPosition": 6, "code": "OMSAFI2S"},
+                        {"name": "S-Pankki", "logoUrl": "https://public.montonio.com/images/aspsps_logos/s-pankki.png", "supportedCurrencies": ["EUR"], "uiPosition": 7, "code": "SBANFIHH"},
+                        {"name": "Alandsbanken", "logoUrl": "https://public.montonio.com/images/aspsps_logos/alandsbanken-fi.png", "supportedCurrencies": ["EUR"], "uiPosition": 8, "code": "AABAFI22"},
+                        {"name": "Revolut Finland", "logoUrl": "https://public.montonio.com/images/aspsps_logos/v2/revolut.png", "supportedCurrencies": ["EUR"], "uiPosition": 10, "code": "RVUALT2V"},
+                        {"name": "N26 Finland", "logoUrl": "https://public.montonio.com/images/aspsps_logos/v2/n26.svg", "supportedCurrencies": ["EUR"], "uiPosition": 11, "code": "NTSBDEB1"}
+                    ]
+                },
+                "DE": {
+                    "supportedCurrencies": ["EUR"],
+                    "paymentMethods": [
+                        {"name": "Sparkasse", "logoUrl": "https://public.montonio.com/images/aspsps_logos/sparkasse.png", "supportedCurrencies": ["EUR"], "uiPosition": 1, "code": "SPARKASSE"},
+                        {"name": "Postbank", "logoUrl": "https://public.montonio.com/images/aspsps_logos/v2/postbank.png", "supportedCurrencies": ["EUR"], "uiPosition": 1, "code": "PBNKDEFFTIP"},
+                        {"name": "Deutsche Bank", "logoUrl": "https://public.montonio.com/images/aspsps_logos/v2/deutschebank.png", "supportedCurrencies": ["EUR"], "uiPosition": 5, "code": "DEUTDEFFXXX"},
+                        {"name": "Sparda-Bank", "logoUrl": "https://public.montonio.com/images/aspsps_logos/v2/sparda.png", "supportedCurrencies": ["EUR"], "uiPosition": 7, "code": "SPARDA"},
+                        {"name": "Commerzbank", "logoUrl": "https://public.montonio.com/images/aspsps_logos/v2/commerzbank.png", "supportedCurrencies": ["EUR"], "uiPosition": 8, "code": "COBADEFF"},
+                        {"name": "N26 Germany", "logoUrl": "https://public.montonio.com/images/aspsps_logos/v2/n26.svg", "supportedCurrencies": ["EUR"], "uiPosition": 9, "code": "NTSBDEB1"},
+                        {"name": "HypoVereinsbank (UniCredit)", "logoUrl": "https://public.montonio.com/images/aspsps_logos/v2/hypovereinsbank-unicredit.png", "supportedCurrencies": ["EUR"], "uiPosition": 10, "code": "HYVEDEMMXXX"},
+                        {"name": "Comdirect", "logoUrl": "https://public.montonio.com/images/aspsps_logos/v2/comdirect.png", "supportedCurrencies": ["EUR"], "uiPosition": 11, "code": "COBADEHD"},
+                        {"name": "Norisbank", "logoUrl": "https://public.montonio.com/images/aspsps_logos/v2/noris.png", "supportedCurrencies": ["EUR"], "uiPosition": 11, "code": "NORSDE51XXX"},
+                        {"name": "Revolut Germany", "logoUrl": "https://public.montonio.com/images/aspsps_logos/v2/revolut.png", "supportedCurrencies": ["EUR"], "uiPosition": 12, "code": "RVUALT2V"},
+                        {"name": "Consors Bank", "logoUrl": "https://public.montonio.com/images/aspsps_logos/v2/consorsbank.svg", "supportedCurrencies": ["EUR"], "uiPosition": 13, "code": "CSDBDE71XXX"}
+                    ]
+                },
+                "LT": {
+                    "supportedCurrencies": ["EUR"],
+                    "paymentMethods": [
+                        {"name": "Swedbank Lithuania", "logoUrl": "https://public.montonio.com/images/aspsps_logos/swedbank.png", "supportedCurrencies": ["EUR"], "uiPosition": 1, "code": "HABALT22"},
+                        {"name": "SEB Lithuania", "logoUrl": "https://public.montonio.com/images/aspsps_logos/seb.png", "supportedCurrencies": ["EUR"], "uiPosition": 2, "code": "CBVILT2X"},
+                        {"name": "Luminor Lithuania", "logoUrl": "https://public.montonio.com/images/aspsps_logos/luminor.png", "supportedCurrencies": ["EUR"], "uiPosition": 3, "code": "AGBLLT2X"},
+                        {"name": "Šiaulių bankas", "logoUrl": "https://public.montonio.com/images/aspsps_logos/siauliu.png", "supportedCurrencies": ["EUR"], "uiPosition": 4, "code": "CBSBLT26"},
+                        {"name": "Citadele Lithuania", "logoUrl": "https://public.montonio.com/images/aspsps_logos/citadele.png", "supportedCurrencies": ["EUR"], "uiPosition": 5, "code": "INDULT2X"},
+                        {"name": "Revolut Lithuania", "logoUrl": "https://public.montonio.com/images/aspsps_logos/v2/revolut.png", "supportedCurrencies": ["EUR"], "uiPosition": 6, "code": "RVUALT2V"}
+                    ]
+                },
+                "EE": {
+                    "supportedCurrencies": ["EUR"],
+                    "paymentMethods": [
+                        {"name": "Swedbank Estonia", "logoUrl": "https://public.montonio.com/images/aspsps_logos/swedbank.png", "supportedCurrencies": ["EUR"], "uiPosition": 1, "code": "HABAEE2X"},
+                        {"name": "SEB Estonia", "logoUrl": "https://public.montonio.com/images/aspsps_logos/seb.png", "supportedCurrencies": ["EUR"], "uiPosition": 2, "code": "EEUHEE2X"},
+                        {"name": "LHV Estonia", "logoUrl": "https://public.montonio.com/images/aspsps_logos/v2/lhv.png", "supportedCurrencies": ["EUR"], "uiPosition": 3, "code": "LHVBEE22"},
+                        {"name": "Luminor Estonia", "logoUrl": "https://public.montonio.com/images/aspsps_logos/luminor.png", "supportedCurrencies": ["EUR"], "uiPosition": 4, "code": "RIKOEE22"},
+                        {"name": "Coop Pank", "logoUrl": "https://public.montonio.com/images/aspsps_logos/coop.png", "supportedCurrencies": ["EUR"], "uiPosition": 5, "code": "EKRDEE22"},
+                        {"name": "Citadele Estonia", "logoUrl": "https://public.montonio.com/images/aspsps_logos/citadele.png", "supportedCurrencies": ["EUR"], "uiPosition": 6, "code": "PARXEE22"},
+                        {"name": "Revolut Estonia", "logoUrl": "https://public.montonio.com/images/aspsps_logos/v2/revolut.png", "supportedCurrencies": ["EUR"], "uiPosition": 7, "code": "RVUALT2V"},
+                        {"name": "N26 Estonia", "logoUrl": "https://public.montonio.com/images/aspsps_logos/v2/n26.svg", "supportedCurrencies": ["EUR"], "uiPosition": 8, "code": "NTSBDEB1"}
+                    ]
+                },
+                "LV": {
+                    "supportedCurrencies": ["EUR"],
+                    "paymentMethods": [
+                        {"name": "Revolut Latvia", "logoUrl": "https://public.montonio.com/images/aspsps_logos/v2/revolut.png", "supportedCurrencies": ["EUR"], "uiPosition": 1, "code": "RVUALT2V"},
+                        {"name": "Swedbank Latvia", "logoUrl": "https://public.montonio.com/images/aspsps_logos/swedbank.png", "supportedCurrencies": ["EUR"], "uiPosition": 2, "code": "HABALV22"},
+                        {"name": "SEB Latvia", "logoUrl": "https://public.montonio.com/images/aspsps_logos/seb.png", "supportedCurrencies": ["EUR"], "uiPosition": 3, "code": "UNLALV2X"},
+                        {"name": "Citadele Latvia", "logoUrl": "https://public.montonio.com/images/aspsps_logos/citadele.png", "supportedCurrencies": ["EUR"], "uiPosition": 4, "code": "PARXLV22"},
+                        {"name": "Luminor Latvia", "logoUrl": "https://public.montonio.com/images/aspsps_logos/luminor.png", "supportedCurrencies": ["EUR"], "uiPosition": 5, "code": "RIKOLV2X"}
+                    ]
+                }
+            }
+        }
+    }
+}

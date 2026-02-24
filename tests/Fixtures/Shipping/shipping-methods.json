@@ -1,0 +1,57 @@
+{
+    "countries": [
+        {
+            "carriers": [
+                {
+                    "carrierCode": "dpd",
+                    "shippingMethods": [
+                        {
+                            "type": "courier",
+                            "subtypes": [
+                                { "code": "standard" }
+                            ],
+                            "constraints": {
+                                "parcelDimensionsRequired": false
+                            }
+                        },
+                        {
+                            "type": "pickupPoint",
+                            "subtypes": [
+                                { "code": "parcelMachine" },
+                                { "code": "parcelShop" }
+                            ],
+                            "constraints": {
+                                "parcelDimensionsRequired": false
+                            }
+                        }
+                    ]
+                },
+                {
+                    "carrierCode": "omniva",
+                    "shippingMethods": [
+                        {
+                            "type": "courier",
+                            "subtypes": [
+                                { "code": "standard" }
+                            ],
+                            "constraints": {
+                                "parcelDimensionsRequired": false
+                            }
+                        },
+                        {
+                            "type": "pickupPoint",
+                            "subtypes": [
+                                { "code": "parcelMachine" },
+                                { "code": "postOffice" }
+                            ],
+                            "constraints": {
+                                "parcelDimensionsRequired": false
+                            }
+                        }
+                    ]
+                }
+            ],
+            "countryCode": "EE"
+        }
+    ]
+}

@@ -1,0 +1,18 @@
+{
+    "uuid": "the-montonio-order-uuid",
+    "accessKey": "MY_ACCESS_KEY",
+    "merchantReference": "MY-ORDER-ID-123",
+    "merchantReferenceDisplay": "MY-ORDER-ID-123",
+    "paymentStatus": "PAID",
+    "paymentMethod": "paymentInitiation",
+    "grandTotal": 99.99,
+    "currency": "EUR",
+    "senderIban": "EE471000001020145685",
+    "senderName": "John Doe",
+    "paymentProviderName": "New Wave Bank Group",
+    "iat": 1632967333,
+    "exp": 1632967333,
+    "merchant_reference": "MY-ORDER-ID-123",
+    "merchant_reference_display": "MY-ORDER-ID-123",
+    "payment_status": "PAID"
+}
