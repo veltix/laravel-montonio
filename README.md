@@ -19,6 +19,12 @@ Run the install command to publish the config and migrations:
 php artisan montonio:install
 ```
 
+If you plan to use your own database tables and models, skip migrations during install:
+
+```bash
+php artisan montonio:install --skip-migrations
+```
+
 Add your API credentials to `.env`:
 
 ```dotenv
@@ -50,6 +56,8 @@ php artisan vendor:publish --tag=montonio-config
 | `MONTONIO_SECRET_KEY` | `''` | Your Montonio API secret key |
 | `MONTONIO_ENVIRONMENT` | `sandbox` | API environment (`sandbox` or `production`) |
 | `MONTONIO_TIMEOUT` | `30` | HTTP request timeout in seconds |
+| `MONTONIO_MIGRATIONS_ENABLED` | `true` | Load the package's migrations |
+| `MONTONIO_SYNC_COMMANDS_ENABLED` | `true` | Register the `montonio:sync-methods` command |
 | `MONTONIO_CACHE_ENABLED` | `true` | Enable caching for payment/shipping methods |
 | `MONTONIO_CACHE_TTL` | `3600` | Cache time-to-live in seconds |
 | `MONTONIO_WEBHOOK_ROUTE` | `/montonio/webhook` | Webhook endpoint path |
@@ -183,6 +191,61 @@ Add middleware to the webhook route via the config:
     'middleware' => ['api', App\Http\Middleware\VerifyIpWhitelist::class],
 ],
 ```
+
+## Customization
+
+### Custom models
+
+By default the package provides `PaymentMethod` and `ShippingMethod` Eloquent models backed by their own migrations. If your application already has payment or shipping method tables, you can swap the models the package uses at runtime.
+
+1. Disable the package's migrations and sync commands:
+
+```dotenv
+MONTONIO_MIGRATIONS_ENABLED=false
+MONTONIO_SYNC_COMMANDS_ENABLED=false
+```
+
+2. Point the config at your own models:
+
+```php
+// config/montonio.php
+'models' => [
+    'payment_method' => App\Models\PaymentMethod::class,
+    'shipping_method' => App\Models\ShippingMethod::class,
+],
+```
+
+The sync actions, cache service, and everything else in the package will use your models instead.
+
+### Extending the default models
+
+If you only need to add relationships or change the table name, extend the package's models instead of writing your own from scratch:
+
+```php
+use Veltix\LaravelMontonio\Models\PaymentMethod as BasePaymentMethod;
+
+class PaymentMethod extends BasePaymentMethod
+{
+    protected $table = 'my_payment_methods';
+
+    public function orders(): HasMany
+    {
+        return $this->hasMany(Order::class);
+    }
+}
+```
+
+Then register it in the config:
+
+```php
+'models' => [
+    'payment_method' => App\Models\PaymentMethod::class,
+],
+```
+
+### Disabling the sync command
+
+Set `MONTONIO_SYNC_COMMANDS_ENABLED=false` to prevent the `montonio:sync-methods` command from being registered. This is useful when you want to write your own sync logic while still using the rest of the package.
 
 ## Caching
 

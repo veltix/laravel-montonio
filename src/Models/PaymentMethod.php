@@ -7,7 +7,7 @@ namespace Veltix\LaravelMontonio\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
-final class PaymentMethod extends Model
+class PaymentMethod extends Model
 {
     protected $table = 'montonio_payment_methods';
 

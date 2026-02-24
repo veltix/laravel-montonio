@@ -27,15 +27,20 @@ final class MontonioServiceProvider extends ServiceProvider
             __DIR__.'/../config/montonio.php' => config_path('montonio.php'),
         ], 'montonio-config');
 
-        $this->publishesMigrations([
-            __DIR__.'/../database/migrations' => database_path('migrations'),
-        ], 'montonio-migrations');
+        if (config('montonio.migrations')) {
+            $this->publishesMigrations([
+                __DIR__.'/../database/migrations' => database_path('migrations'),
+            ], 'montonio-migrations');
+        }
 
         if ($this->app->runningInConsole()) {
-            $this->commands([
-                InstallCommand::class,
-                SyncMethodsCommand::class,
-            ]);
+            $commands = [InstallCommand::class];
+
+            if (config('montonio.sync_commands')) {
+                $commands[] = SyncMethodsCommand::class;
+            }
+
+            $this->commands($commands);
         }
 
         /** @var string $route */

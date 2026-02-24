@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
-use Veltix\LaravelMontonio\Models\PaymentMethod;
+use Veltix\LaravelMontonio\Support\ModelResolver;
 use Veltix\LaravelMontonio\Support\SyncResult;
 use Veltix\Montonio\Montonio;
 use Veltix\Montonio\Payments\Dto\Response\BankPaymentMethod;
@@ -22,6 +22,7 @@ final readonly class SyncPaymentMethods
     public function handle(): SyncResult
     {
         $result = DB::transaction(function (): SyncResult {
+            $modelClass = ModelResolver::paymentMethodClass();
             $response = $this->montonio->payments()->getPaymentMethods();
 
             $created = 0;
@@ -30,7 +31,7 @@ final readonly class SyncPaymentMethods
 
             foreach ($response->paymentMethods as $methodCode => $detail) {
                 if ($detail->setup === null) {
-                    $model = PaymentMethod::updateOrCreate(
+                    $model = $modelClass::updateOrCreate(
                         [
                             'method_code' => $methodCode,
                             'country' => null,
@@ -60,7 +61,7 @@ final readonly class SyncPaymentMethods
                         'ui_position' => $bank->uiPosition,
                     ], $countryMethods->paymentMethods);
 
-                    $model = PaymentMethod::updateOrCreate(
+                    $model = $modelClass::updateOrCreate(
                         [
                             'method_code' => $methodCode,
                             'country' => $countryCode,
@@ -82,7 +83,7 @@ final readonly class SyncPaymentMethods
                 }
             }
 
-            $deactivated = PaymentMethod::whereNotIn('id', $seenIds)
+            $deactivated = $modelClass::whereNotIn('id', $seenIds)
                 ->where('active', true)
                 ->update(['active' => false]);
 

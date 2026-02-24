@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
-use Veltix\LaravelMontonio\Models\ShippingMethod;
+use Veltix\LaravelMontonio\Support\ModelResolver;
 use Veltix\LaravelMontonio\Support\SyncResult;
 use Veltix\Montonio\Montonio;
 use Veltix\Montonio\Shipping\Dto\Response\ShippingMethodConstraints;
@@ -23,6 +23,7 @@ final readonly class SyncShippingMethods
     public function handle(): SyncResult
     {
         $result = DB::transaction(function (): SyncResult {
+            $modelClass = ModelResolver::shippingMethodClass();
             $response = $this->montonio->shipping()->getShippingMethods();
 
             $created = 0;
@@ -32,7 +33,7 @@ final readonly class SyncShippingMethods
             foreach ($response->countries as $country) {
                 foreach ($country->carriers as $carrier) {
                     foreach ($carrier->shippingMethods as $method) {
-                        $model = ShippingMethod::updateOrCreate(
+                        $model = $modelClass::updateOrCreate(
                             [
                                 'carrier_code' => $carrier->carrierCode,
                                 'method_code' => $method->type,
@@ -53,7 +54,7 @@ final readonly class SyncShippingMethods
                 }
             }
 
-            $deactivated = ShippingMethod::whereNotIn('id', $seenIds)
+            $deactivated = $modelClass::whereNotIn('id', $seenIds)
                 ->where('active', true)
                 ->update(['active' => false]);
 

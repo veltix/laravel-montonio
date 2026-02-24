@@ -7,7 +7,7 @@ namespace Veltix\LaravelMontonio\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
-final class ShippingMethod extends Model
+class ShippingMethod extends Model
 {
     protected $table = 'montonio_shipping_methods';
 

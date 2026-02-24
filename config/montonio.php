@@ -8,6 +8,15 @@ return [
     'environment' => env('MONTONIO_ENVIRONMENT', 'sandbox'),
     'timeout' => env('MONTONIO_TIMEOUT', 30),
 
+    'migrations' => env('MONTONIO_MIGRATIONS_ENABLED', true),
+
+    'models' => [
+        'payment_method' => Veltix\LaravelMontonio\Models\PaymentMethod::class,
+        'shipping_method' => Veltix\LaravelMontonio\Models\ShippingMethod::class,
+    ],
+
+    'sync_commands' => env('MONTONIO_SYNC_COMMANDS_ENABLED', true),
+
     'cache' => [
         'enabled' => env('MONTONIO_CACHE_ENABLED', true),
         'ttl' => env('MONTONIO_CACHE_TTL', 3600),
